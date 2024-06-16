@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/08.JPG</file>
+        <file>images/420.bmp</file>
+        <file>images/422.bmp</file>
+        <file>images/424.bmp</file>
+        <file>images/426.bmp</file>
+        <file>images/428.bmp</file>
+        <file>images/522.bmp</file>
+        <file>images/524.bmp</file>
+        <file>images/526.bmp</file>
+        <file>images/528.bmp</file>
+        <file>images/718.bmp</file>
+        <file>images/800.bmp</file>
+        <file>images/818.bmp</file>
+        <file>images/824.bmp</file>
+        <file>images/ARC.BMP</file>
+        <file>images/BEBULB.ICO</file>
+        <file>images/BUTTON.BMP</file>
+        <file>images/circle.jpg</file>
+        <file>images/DELETE.BMP</file>
+        <file>images/ELLIPSE.BMP</file>
+        <file>images/Ellipse.jpg</file>
+        <file>images/FREEFORM.BMP</file>
+        <file>images/Icon1242.ico</file>
+        <file>images/LINE.BMP</file>
+        <file>images/line.jpg</file>
+        <file>images/MCR.BMP</file>
+        <file>images/poly.jpg</file>
+        <file>images/rect.jpg</file>
+        <file>images/RECTANGL.BMP</file>
+        <file>images/rotateleft.png</file>
+        <file>images/rotateright.png</file>
+        <file>images/triangle.jpg</file>
+        <file>images/turn_left.jpg</file>
+        <file>images/turn_right.jpg</file>
+        <file>images/UNGROUP.BMP</file>
+        <file>images/withdraw.jpg</file>
+        <file>images/zoom_in.jpg</file>
+        <file>images/zoom_out.jpg</file>
+        <file>images/zoomin.png</file>
+        <file>images/zoomout.png</file>
+    </qresource>
+</RCC>

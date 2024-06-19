@@ -36,8 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->view->setDragMode(QGraphicsView::RubberBandDrag);   //设置拖动模式
     this->setCentralWidget(ui->view);
 
-    //撤销类
-    //undoRedoManager = new UndoRedoManager(scene);
 
     //为toolbar添加群组
     QActionGroup *shapeGroup = new QActionGroup(this);
@@ -50,7 +48,6 @@ MainWindow::MainWindow(QWidget *parent)
     shapeGroup->addAction(ui->actItem_Line);
 
     //关联槽函数
-    //connect(ui->view,&TGraphicsView::mouseMovePoint,this, &MainWindow::do_mouseMovePoint);
     connect(ui->view,&TGraphicsView::mouseClicked,this, &MainWindow::do_mouseClicked);
     connect(ui->view,&TGraphicsView::keyPress, this, &MainWindow::do_keyPress);
     connect(ui->view,&TGraphicsView::mouseDoubleClick,this, &MainWindow::do_mouseDoubleClick);
@@ -64,10 +61,6 @@ void MainWindow::setItemProperty(QGraphicsItem *item,QString desciption)
                    | QGraphicsItem::ItemIsSelectable    //可选中
                    | QGraphicsItem::ItemIsFocusable);   //可以获得焦点
     item->setZValue(++frontZ);      //叠放顺序号
-
-    //quint32 v1=QRandomGenerator::global()->bounded(boundValue);
-    //quint32 v2=QRandomGenerator::global()->bounded(boundValue);
-    //item->setPos(v1,v2);    //在场景中的位置
 
     item->setData(ItemId,++seqNum);             //图形项编号
     item->setData(ItemDesciption,desciption);   //图形项描述
@@ -175,6 +168,8 @@ void MainWindow::do_mouseClicked(QPoint point)
     }
     else if (paint_num == 3)  // Ellipse
     {
+        qreal width = 100;  // 设置为需要的宽度
+        qreal height = 50;  // 设置为需要的高度
         myellipse *ellipse = new myellipse(scenePos.x() - width / 2, scenePos.y() - height / 2, width, height);
         setItemProperty(static_cast<QGraphicsEllipseItem*>(ellipse), "Ellipse");
         ellipse->setBrush(QBrush(Qt::blue));
@@ -434,7 +429,9 @@ void MainWindow::on_actionopen_a_file_2_triggered()
                     qreal y = parts[2].toDouble();
                     qreal width = parts[3].toDouble();
                     qreal height = parts[4].toDouble();
+                    QColor color(parts[5]);
                     myrect *rect = new myrect(x, y, width, height);
+                    rect->setBrush(QBrush(color));
                     setItemProperty(static_cast<QGraphicsRectItem*>(rect), "Rectangle");
                     shapelist.push_back(rect);
                 } else if (shapeType == "Circle") {
@@ -442,7 +439,9 @@ void MainWindow::on_actionopen_a_file_2_triggered()
                     qreal y = parts[2].toDouble();
                     qreal width = parts[3].toDouble();
                     qreal height = parts[4].toDouble();
+                    QColor color(parts[5]);
                     mycircle *circle = new mycircle(x, y, width, height);
+                    circle->setBrush(QBrush(color));
                     setItemProperty(static_cast<QGraphicsEllipseItem*>(circle), "Circle");
                     shapelist.push_back(circle);
                 } else if (shapeType == "Ellipse") {
@@ -450,14 +449,18 @@ void MainWindow::on_actionopen_a_file_2_triggered()
                     qreal y = parts[2].toDouble();
                     qreal width = parts[3].toDouble();
                     qreal height = parts[4].toDouble();
+                    QColor color(parts[5]);
                     myellipse *ellipse = new myellipse(x, y, width, height);
+                    ellipse->setBrush(QBrush(color));
                     setItemProperty(static_cast<QGraphicsEllipseItem*>(ellipse), "Ellipse");
                     shapelist.push_back(ellipse);
                 } else if (shapeType == "Triangle") {
                     QPointF p1(parts[1].toDouble(), parts[2].toDouble());
                     QPointF p2(parts[3].toDouble(), parts[4].toDouble());
                     QPointF p3(parts[5].toDouble(), parts[6].toDouble());
+                    QColor color(parts[7]);
                     mytriangle *triangle = new mytriangle(p1, p2, p3);
+                    triangle->setBrush(QBrush(color));
                     setItemProperty(static_cast<QGraphicsPolygonItem*>(triangle), "Triangle");
                     shapelist.push_back(triangle);
                 } else if (shapeType == "Line") {
@@ -465,15 +468,19 @@ void MainWindow::on_actionopen_a_file_2_triggered()
                     qreal p2 = parts[2].toDouble();
                     qreal p3 = parts[3].toDouble();
                     qreal p4 = parts[4].toDouble();
-                    myline *line = new myline(p1,p2,p3,p4);
+                    QColor color(parts[5]);
+                    myline *line = new myline(p1, p2, p3, p4);
+                    line->setPen(QPen(color, 2));
                     setItemProperty(static_cast<QGraphicsLineItem*>(line), "Line");
                     shapelist.push_back(line);
-                } else if (shapeType == "Polygon"){
+                } else if (shapeType == "Polygon") {
                     QPointF p1(parts[1].toDouble(), parts[2].toDouble());
                     QPointF p2(parts[3].toDouble(), parts[4].toDouble());
                     QPointF p3(parts[5].toDouble(), parts[6].toDouble());
                     QPointF p4(parts[7].toDouble(), parts[8].toDouble());
+                    QColor color(parts[9]);
                     mypolygon *polygon = new mypolygon(p1, p2, p3, p4);
+                    polygon->setBrush(QBrush(color));
                     setItemProperty(static_cast<QGraphicsPolygonItem*>(polygon), "Polygon");
                     shapelist.push_back(polygon);
                 }
@@ -482,7 +489,6 @@ void MainWindow::on_actionopen_a_file_2_triggered()
         }
     }
 }
-
 
 //保存为
 void MainWindow::on_actionsave_to_triggered()
@@ -587,7 +593,9 @@ void MainWindow::loadState(const QString &fileName)
                 qreal y = parts[2].toDouble();
                 qreal width = parts[3].toDouble();
                 qreal height = parts[4].toDouble();
+                QColor color(parts[5]);
                 myrect *rect = new myrect(x, y, width, height);
+                rect->setBrush(QBrush(color));
                 setItemProperty(static_cast<QGraphicsRectItem*>(rect), "Rectangle");
                 shapelist.push_back(rect);
             } else if (shapeType == "Circle") {
@@ -595,7 +603,9 @@ void MainWindow::loadState(const QString &fileName)
                 qreal y = parts[2].toDouble();
                 qreal width = parts[3].toDouble();
                 qreal height = parts[4].toDouble();
+                QColor color(parts[5]);
                 mycircle *circle = new mycircle(x, y, width, height);
+                circle->setBrush(QBrush(color));
                 setItemProperty(static_cast<QGraphicsEllipseItem*>(circle), "Circle");
                 shapelist.push_back(circle);
             } else if (shapeType == "Ellipse") {
@@ -603,14 +613,18 @@ void MainWindow::loadState(const QString &fileName)
                 qreal y = parts[2].toDouble();
                 qreal width = parts[3].toDouble();
                 qreal height = parts[4].toDouble();
+                QColor color(parts[5]);
                 myellipse *ellipse = new myellipse(x, y, width, height);
+                ellipse->setBrush(QBrush(color));
                 setItemProperty(static_cast<QGraphicsEllipseItem*>(ellipse), "Ellipse");
                 shapelist.push_back(ellipse);
             } else if (shapeType == "Triangle") {
                 QPointF p1(parts[1].toDouble(), parts[2].toDouble());
                 QPointF p2(parts[3].toDouble(), parts[4].toDouble());
                 QPointF p3(parts[5].toDouble(), parts[6].toDouble());
+                QColor color(parts[7]);
                 mytriangle *triangle = new mytriangle(p1, p2, p3);
+                triangle->setBrush(QBrush(color));
                 setItemProperty(static_cast<QGraphicsPolygonItem*>(triangle), "Triangle");
                 shapelist.push_back(triangle);
             } else if (shapeType == "Line") {
@@ -618,15 +632,19 @@ void MainWindow::loadState(const QString &fileName)
                 qreal p2 = parts[2].toDouble();
                 qreal p3 = parts[3].toDouble();
                 qreal p4 = parts[4].toDouble();
-                myline *line = new myline(p1,p2,p3,p4);
+                QColor color(parts[5]);
+                myline *line = new myline(p1, p2, p3, p4);
+                line->setPen(QPen(color, 2));
                 setItemProperty(static_cast<QGraphicsLineItem*>(line), "Line");
                 shapelist.push_back(line);
-            } else if (shapeType == "Polygon"){
+            } else if (shapeType == "Polygon") {
                 QPointF p1(parts[1].toDouble(), parts[2].toDouble());
                 QPointF p2(parts[3].toDouble(), parts[4].toDouble());
                 QPointF p3(parts[5].toDouble(), parts[6].toDouble());
                 QPointF p4(parts[7].toDouble(), parts[8].toDouble());
+                QColor color(parts[9]);
                 mypolygon *polygon = new mypolygon(p1, p2, p3, p4);
+                polygon->setBrush(QBrush(color));
                 setItemProperty(static_cast<QGraphicsPolygonItem*>(polygon), "Polygon");
                 shapelist.push_back(polygon);
             }
@@ -647,12 +665,6 @@ void MainWindow::on_actionUndo_triggered()
 void MainWindow::on_actionRedo_triggered()
 {
     if (!redoFiles.isEmpty()) {
-        // 获取当前状态并保存到 undoFiles，以便能够撤销 Redo 操作
-        if (!undoFiles.isEmpty()) {
-            QString currentFile = undoFiles.top();
-            undoFiles.push(currentFile);
-        }
-
         // 从 redoFiles 弹出并加载状态
         QString redoFile = redoFiles.pop();
         loadState(redoFile);

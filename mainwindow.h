@@ -41,6 +41,13 @@ private:
     int frontZ=0;   //用于bring to back
     QString currentFile;
     QGraphicsScene *scene;   // 添加 QGraphicsView
+    //撤销和重做
+    QUndoStack *undoStack;
+    QStack<QString> undoFiles;
+    QStack<QString> redoFiles;
+    int maxFiles = 10;
+    void saveCurrentState();
+    void loadState(const QString &fileName);
 
 public:
     std::vector<myshape*> shapelist;    //图形容器
@@ -49,8 +56,7 @@ public:
     ~MainWindow();
 
 public slots:
-//    覆写
-    //void do_mouseMovePoint(QPoint point);
+    //    覆写
     void do_mouseDoubleClick(QPoint point);
     void do_mouseClicked(QPoint point);
     void do_keyPress(QKeyEvent *event);
@@ -112,20 +118,7 @@ public slots:
 
 
 private:
-    Ui::MainWindow *ui; // 添加 QGraphicsScene
-
-    //撤销和重做
-    QUndoStack *undoStack;
-
-    QStack<QString> undoFiles;
-    QStack<QString> redoFiles;
-
-    int maxFiles = 10;
-
-    void saveCurrentState();
-    void loadState(const QString &fileName);
-
-
+    Ui::MainWindow *ui;
 };
 
 
